@@ -1,10 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://yq5n0i3xu5wg"]
+[gd_scene load_steps=17 format=3 uid="uid://yq5n0i3xu5wg"]
 
 [ext_resource type="Script" uid="uid://bckaek4uh0mpn" path="res://scripts/Main.cs" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://be01etgmcqe3j" path="res://scenes/player.tscn" id="1_o5qli"]
 [ext_resource type="PackedScene" uid="uid://bmuff4pn008nv" path="res://scenes/mob.tscn" id="2_sugp2"]
 [ext_resource type="FontFile" uid="uid://cyxhh7ddkn62q" path="res://assets/fonts/Montserrat-Medium.ttf" id="4_tbgi4"]
 [ext_resource type="Script" uid="uid://dkt8c2oexeusx" path="res://scripts/ScoreLabel.cs" id="5_tefeu"]
+[ext_resource type="AudioStream" uid="uid://c5qpnfga41t4p" path="res://assets/art/House In a Forest Loop.ogg" id="6_tefeu"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o5qli"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -153,6 +154,9 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Press Enter to Retry
 "
+
+[node name="Music" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_tefeu")
 
 [connection signal="Hit" from="Player" to="." method="_on_player_hit"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
