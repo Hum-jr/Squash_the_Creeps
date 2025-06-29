@@ -3,6 +3,8 @@ using System;
 
 public partial class Mob : CharacterBody3D
 {
+	[Signal]
+	public delegate void SquashedEventHandler();
 	[Export] 
 	public int MinSpeed { get; set; } = 10;
 	[Export] 
@@ -28,6 +30,12 @@ public partial class Mob : CharacterBody3D
 
 	private void _on_visible_on_screen_notifier_3d_screen_exited()
 	{
+		QueueFree();
+	}
+
+	public void Squash()
+	{
+		EmitSignal(SignalName.Squashed);
 		QueueFree();
 	}
 }

@@ -3,15 +3,48 @@ using System;
 
 public partial class Player : CharacterBody3D
 {
+	
+	[Signal]
+	public delegate void HitEventHandler();
 	[Export] 
 	public int Speed { get; set; } = 14;
 	[Export]
 	public int FallAcceleratioon { get; set; } = 75;
+	
+	[Export]
+	public int JumpImpulse { get; set; } = 20;
+	
+	[Export]
+	public int BounceImpulse { get; set; } = 16;
+	
+	
 	private Vector3 _targetVelocity = Vector3.Zero;
 
 	public override void _PhysicsProcess(double delta)
 	{
 		var direction = Vector3.Zero;
+
+		if (IsOnFloor() && Input.IsActionJustPressed("jump"))
+		{
+			_targetVelocity = Vector3.Up * JumpImpulse;
+		}
+
+		for (var index = 0; index < GetSlideCollisionCount(); index++)
+		{
+			var collision = GetSlideCollision(index);
+
+			if (collision.GetCollider() is Mob mob)
+			{
+				if (Vector3.Up.Dot(collision.GetNormal()) > 0.1f)
+				{
+					mob.Squash();
+					_targetVelocity.Y = BounceImpulse;
+
+					break;
+				}
+			}
+		}
+		
 
 		if (Input.IsActionPressed("move_left"))
 		{
@@ -49,5 +82,16 @@ public partial class Player : CharacterBody3D
 		
 		Velocity = _targetVelocity;
 		MoveAndSlide();
+	}
+
+	private void die()
+	{
+		EmitSignal(SignalName.Hit);
+		QueueFree();
+	}
+
+	private void _on_mob_detector_body_entered(object body)
+	{
+		die();
 	}
 }
