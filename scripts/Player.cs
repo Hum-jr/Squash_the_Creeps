@@ -90,7 +90,7 @@ public partial class Player : CharacterBody3D
 		QueueFree();
 	}
 
-	private void _on_mob_detector_body_entered(object body)
+	private void _on_mob_detector_body_entered(Node3D body)
 	{
 		die();
 	}
